@@ -15,4 +15,9 @@ feature.txt	- 	Raw data for column headings
 features	- 	data frame of column headings
 name		- 	subset of column 2 from the features data set
 measurments	-	subset for mean and standard deviation measurements
+get_means	-	collect all column names in the measurment data frame
+ans 		- 	process of pulling out all column names that have Mean or mean in the name
 all_means	_	subset of all mean measurements
+
+analysis_means.txt	-	tidy data set written
+

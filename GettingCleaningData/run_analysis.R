@@ -13,7 +13,7 @@ run_analysis <- function(){
 ####################################################################################
 ## Extract the name column(V2) from the features data.
 ## The name data.frame will correspond with the columns in the alldata data.frame.
-## For exmaple 1 correspond with V1, 2 correspond with V2, tec.
+## For exmaple 1 correspond with V1, 2 correspond with V2, 3 correspond with V3, etc.
 
     name <- subset(features, select = c(V2))
 
@@ -28,7 +28,7 @@ run_analysis <- function(){
                                           "V347","V348","V349","V350","V424","V425","V426","V427","V428","V429","V503","V504",
                                           "V516","V517","V529","V530","V542","V543","V556","V557","V558","V559","V560","V561"))
 
-## Now create the new column headings for the selected columns
+## Now create the new column headings for the selected columns using the corresponding column name in the features data frame.
 
     colnames(measurments) <- c("tBodyAcc_mean_X",    "tBodyAcc_mean_Y",    "tBodyAcc_mean_Z",    "tBodyAcc_std_X",    "tBodyAcc_std_Y",    "tBodyAcc_std_Z",
                                "tGravityAcc_mean_X", "tGravityAcc_mean_Y", "tGravityAcc_mean_Z", "tGravityAcc_std_X", "tGravityAcc_std_Y", "tGravityAcc_std_Z",

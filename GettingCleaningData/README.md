@@ -12,4 +12,4 @@ Human Activity Recognition Using Smartphones Dataset
   
 •	Edits were made in the features.txt file to create more readable column headings
 
-•	The subset of the mean measurements were written to a text file,”analysis_means.txt” 
+•	The tidy data set of the mean measurements were written to a text file,”analysis_means.txt” 
