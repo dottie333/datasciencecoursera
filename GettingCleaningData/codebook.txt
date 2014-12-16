@@ -1,0 +1,23 @@
+		Run Analysis – Code Book
+
+X_train.txt	-	Raw data from training data x
+X_test.txt 	- 	Raw data from test data x
+trainingx 	- 	data frame for raw data from training data x
+testx		-	data frame for raw data from test data x
+alldata		- 	combine training data x with test data x
+feature.txt	- 	Raw data for column headings
+			Edited features.txt with the find and replace function
+			•	“()-” 	replaced with	 “_”
+			•	“(“  	replaced with 	nothing (removed)
+			•	“)” 	replaced with	 nothing (removed)
+			•	“,”	replaced with	 nothing (removed)
+			•	“-“ 	replaced with 	“_”
+features	- 	data frame of column headings
+name		- 	subset of column 2 from the features data set
+measurments	-	subset for mean and standard deviation measurements
+get_means	-	collect all column names in the measurment data frame
+ans 		- 	process of pulling out all column names that have Mean or mean in the name
+all_means	_	subset of all mean measurements
+
+analysis_means.txt	-	tidy data set written
+
