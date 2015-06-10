@@ -7,10 +7,12 @@ housedata <- na.omit(housedata)
 
 dateTime   <- as.POSIXlt(paste(as.Date(housedata$Date, format="%d/%m/%Y"), housedata$Time, sep=" "))
 
-par(mfrow = c(2,2))
-par(mar= c(5.1,4.1,0.5,2.1))
 
-plot(dateTime, housedata$Global_active_power,ylab ="Global Active Power (kilowatts)",xlab = " ",
+par(mfrow = c(2,2))
+par(mar= c(5.1,4.1,0.5,0.75))
+
+
+plot(dateTime, housedata$Global_active_power,ylab ="Global Active Power",xlab = " ",
      type='l')
 plot(dateTime, housedata$Voltage,ylab ="Voltage",xlab = "datetime ",type='l')
 with(housedata, plot(dateTime,housedata$Sub_metering_1,type ="n", 
