@@ -74,6 +74,15 @@ However it will show "NA" on days that have no steps to calculate.
 
 ```r
 attach(activity)
+```
+
+```
+## The following objects are masked from activity (pos = 3):
+## 
+##     date, interval, steps
+```
+
+```r
 tapply(steps,date,sum)
 ```
 
@@ -907,5 +916,12 @@ head(new_activity,6)
 Make a pannel plot containing a time series plot of the intervals and average numberof steps
 taken,average across all weekdays or weekends.
 
+library(lattice)
+
+x <- tapply(new_activity$interval,new_activity$date,mean)
+y <- plot_interval$average_steps[new_activity$day 
+f <- new_activity[,4]
+
+xyplot(y ~ x | f, type ="l", layout = c(1,2), ylab = "Steps", xlab ="interval")
 
 
