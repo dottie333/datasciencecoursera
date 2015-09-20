@@ -1,0 +1,296 @@
+#Personal Movement Activity Monitoring Data
+
+## Assignment 1
+
+Set Global options so that all code chunks will specify echo = TRUE
+
+```{r setoptions, echo=TRUE}
+library(knitr)
+opts_chunk$set(echo = TRUE)
+```
+
+The activity csv file is read into RStuido, creating a data frame name 'activity'. 
+Make sure the csv file is located in your default directory. 
+
+```{r}
+activity <- read.csv("activity.csv", header = TRUE,sep = ",")
+```
+
+Eliminate records that contain “NA” values 
+
+```{r}
+activity <- na.omit(activity)
+```
+
+Sort records by date and interval
+
+```{r}
+activity <- activity[order(activity$date,activity$interval),]
+```
+
+Install the dplyr package to utilize the summarize feature
+
+```{r}
+library(dplyr)
+```
+
+Using dplyr, create a data frame  named "all_steps" that  will group by ‘date’ 
+and summarize on ‘steps’ per day.
+
+```{r}
+all_steps <- activity %>%
+    group_by(date) %>%
+    summarise(total_steps = sum(steps))
+all_steps
+```
+
+The tapply function can be used to give you the same results as well. 
+However it will show "NA" on days that have no steps to calculate.
+
+```{r}
+attach(activity)
+tapply(steps,date,sum)
+```
+
+The aggergate is another option
+```{r}
+aggregate(steps ~ date,activity,sum)
+```
+
+########################################
+
+Histogram of the total number of steps taken each day
+
+```{r}
+with(all_steps, hist(all_steps$total_steps,main = "Total Steps Taken Per Day",
+                     xlab ="Steps", col = "blue" ))
+
+dev.copy(png,file ="steps1.png")
+dev.off()
+```
+
+Histogram can also be created using the tapply function
+
+```{r}
+with(activity, hist(tapply(steps,date,sum),main = "Total Step Per Day",xlab = "Steps", col = "green"))
+
+dev.copy(png,file ="steps2.png")
+dev.off()
+```
+
+calculate the mean and median of the total number of steps per day
+
+```{r}
+daily_steps_mean <- activity %>%
+    group_by(date) %>%
+    summarise(average_steps = mean(steps))
+daily_steps_mean
+```
+
+Or you can use the aggregate function
+
+```{r}
+aggregate(steps ~ date,activity,mean)
+```
+For the median:
+
+```{r}
+daily_steps_median <- activity %>%
+    group_by(date) %>%
+    summarise(average_steps = median(steps))
+daily_steps_median
+```
+The aggregate fuction can be used as well
+
+```{r}
+aggregate(steps ~ date,activity,median)
+```
+
+
+Plot average daily activity pattern
+#####################################
+I plotted the average intervals and the average steps.  I know it is not correct but 
+if time allows, I will come back and correct it. 
+
+```{r}
+plot_interval<- aggregate(interval ~ date,activity,mean)
+
+plot(plot_interval[,2],daily_steps_mean$average_steps,
+     main ="Average Steps Per Day",xlab = "5 minute intervals ", ylab = "Steps", type='l' )
+
+dev.copy(png,file ="interval1.png")
+dev.off()
+```
+
+#####################################
+Which 5 minute  interval, on average across all days in the dataset, 
+contains the maximum nmber of steps?
+
+steps       date    interval
+713     2012-10-22     1155
+
+The average 5 minute interval is 1177.5
+The average seems to be the same if I averaged by group or over-all 5-minute interval.
+
+This is by group
+```{r}
+plot_interval<- aggregate(interval ~ date,activity,mean)
+```
+
+This is for over-all average
+```{r}
+chck_interval <- activity[,3]
+mean(chck_interval)
+```
+
+Next, I checked for the interval that is closest to 1177.5, mean value.
+then ordered the returned set, and then processed the 'tail' value 
+```{r}
+maxsteps <- subset(activity, as.integer(activity[,3]) <= 1178)
+maxsteps <- maxsteps[order(maxsteps$interval),]
+tail(maxsteps,6)
+```
+
+Now that I know 1155 is the closest value to the mean.
+I create a subset dataset of all 5-minute intervals of 1155.
+Ordered the set by steps, and then 'tailed' the last 6 records,get the last value. 
+```{r}
+max_set <- subset(maxsteps, maxsteps[,3] == 1155)
+max_set <- max_set[order(max_set$steps),]
+tail(max_set,6)
+```
+ steps       date   interval
+713     2012-10-22     1155
+
+################################################
+Imputing missing values
+
+To remove bias from the previous steps, I removed the “NA” value.  
+So for this step, I will re-read the activity set and give it another name activity2. 
+Then, order by date and interval.
+
+```{r}
+activity2 <- read.csv("activity.csv", header = TRUE,sep = ",")
+
+activity2 <- activity2[order(activity2$date,activity2$interval),]
+```
+
+Calculate and report total number of rows with NA
+```{r}
+all_missing <- activity2[!complete.cases(activity2),]
+nrow(all_missing)
+```
+################################################
+Devise a strategy for filling in all the missing values in the dataset.
+
+```{r}
+activity2$steps[which(is.na(activity2$steps))] <- mean(activity2$interval)
+tail(activity2,6)
+```
+The missing values were replaced with the mean interval value.
+
+###############################################
+
+Create a new dataset that is equal to the original dataset 
+but with the missing data filled in.
+
+I re-loaded the data file to get the original, then substituted the "NA" 
+with 0.
+```{r}
+activity <- read.csv("activity.csv", header = TRUE,sep = ",")
+
+new_activity <- evalq(activity, activity$steps[which(is.na(activity$steps))] <- 0)
+head(new_activity,6)
+```
+The "NA" were replaced with zeros.
+#################################################
+
+Histogram of total number of steps taken each day
+
+```{r}
+daily_steps <- new_activity %>%
+    group_by(date) %>%
+    summarise(total_steps = sum(steps))
+daily_steps
+
+
+with(daily_steps, hist(daily_steps$total_steps,main = "Total Steps Taken Per Day",
+                     xlab ="Steps", col = "blue" ))
+
+dev.copy(png,file ="tsteps1.png")
+dev.off()
+
+with(new_activity, hist(tapply(steps,date,sum),main = "Total Step Per Day",xlab = "Steps", col = "green"))
+
+dev.copy(png,file ="tsteps2.png")
+dev.off()
+
+```
+
+Calculate and report the mean and median total number of steps per day
+
+```{r}
+mean_steps <- new_activity %>%
+    group_by(date) %>%
+    summarise(average_steps = mean(steps))
+mean_steps
+```
+
+You can also use the aggregate functon
+
+```{r}
+aggregate(steps ~ date,new_activity,mean)
+```
+for median
+```{r}
+median_steps <- new_activity %>%
+    group_by(date) %>%
+    summarise(average_steps = median(steps))
+median_steps
+```
+
+You can also use the aggregate functon
+```{r}
+aggregate(steps ~ date,new_activity,median)
+```
+
+Do these values differ from the estimates from the first part of the assignment?  It differs only because the missing data is filled in.  So, more zeros are added.  Now more days are included in the total calculations.   The first part of the assignment indicated a normal distribution of data because the mean and the median are the same.  
+
+What is the impact of imputing missing data on the estimates of the total daily number of steps?
+The value for each day does not change.  However new values are added for the missing days.  So the missing days are now included in the calculations. This causes the histogram to be more skewed.  The x-axis on the histogram is not symmetric, which results in a not so normal distribution.
+
+#############################################
+Patterns between weekdays and weekends
+
+Create a new factor vaiable in the dataset with two levels, "weekday" and "weekend"
+
+-    Installed the “lubridate” package  so I could use the wday option. 
+-	 Created a variable, ‘mydate’, that contained the date column from the new_activity dataset.
+-	 Created a new dataset, ’factor_set’, using new_activity and adding the column ‘mydate’ 
+    using the cbind function and  wday from the lubridate package. 
+-	Changed the column name for column 4.
+-	Changed the class of column 4 to be a factor class. 
+-	Change the levels in the factor from 1,2,3,4,5,6,7 to “weekday” and “weekend” 
+-	Made factor_set the new new_activity dataset. 
+
+```{r}
+library(lubridate)
+
+mydate <- as.Date(new_activity[,2])
+
+factor_set <- cbind(new_activity,wday(mydate))
+
+colnames(factor_set) <- c("steps","date","interval","day")
+
+factor_set[,4] <- factor(factor_set[,4], labels = c("weekend", "weekday","weekday",
+                                                    "weekday","weekday","weekday","weekend"))
+
+new_activity <- factor_set
+head(new_activity,6)
+```
+
+Make a pannel plot containing a time series plot of the intervals and average numberof steps
+taken,average across all weekdays or weekends.
+
+
+
