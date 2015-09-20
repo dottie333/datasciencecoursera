@@ -73,29 +73,7 @@ However it will show "NA" on days that have no steps to calculate.
 
 
 ```r
-attach(activity)
-```
-
-```
-## The following objects are masked from activity (pos = 3):
-## 
-##     date, interval, steps
-## 
-## The following objects are masked from activity (pos = 4):
-## 
-##     date, interval, steps
-## 
-## The following objects are masked from activity (pos = 7):
-## 
-##     date, interval, steps
-## 
-## The following objects are masked from activity (pos = 10):
-## 
-##     date, interval, steps
-```
-
-```r
-tapply(steps,date,sum)
+tapply(activity$steps,activity$date,sum)
 ```
 
 ```
@@ -193,7 +171,7 @@ aggregate(steps ~ date,activity,sum)
 
 ```r
 with(all_steps, hist(all_steps$total_steps,main = "Total Steps Taken Per Day",
-                     xlab ="Steps", col = "blue" ))
+                     xlab ="Steps",col = "blue" ))
 ```
 
 ![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
@@ -202,7 +180,7 @@ Histogram can also be created using the tapply function
 
 
 ```r
-with(activity, hist(tapply(steps,date,sum),main = "Total Step Per Day",xlab = "Steps", col = "green"))
+with(activity, hist(tapply(steps,date,sum),main = "Total Step Per Day",xlab = "Steps",col = "green"))
 ```
 
 ![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
@@ -458,18 +436,16 @@ Ordered the set by steps, and then 'tailed' the last 6 records,get the last valu
 ```r
 max_set <- subset(maxsteps, maxsteps[,3] == 1155)
 max_set <- max_set[order(max_set$steps),]
-tail(max_set,6)
+tail(max_set,3)
 ```
 
 ```
 ##       steps       date interval
-## 6480    156 2012-10-23     1155
-## 11952   170 2012-11-11     1155
-## 16272   199 2012-11-26     1155
 ## 15984   371 2012-11-25     1155
 ## 13392   431 2012-11-16     1155
 ## 6192    713 2012-10-22     1155
 ```
+ 
  steps       date   interval
 713     2012-10-22     1155
 
@@ -531,17 +507,31 @@ with 0.
 activity <- read.csv("activity.csv", header = TRUE,sep = ",")
 
 new_activity <- evalq(activity, activity$steps[which(is.na(activity$steps))] <- 0)
-head(new_activity,6)
+head(new_activity,20)
 ```
 
 ```
-##   steps       date interval
-## 1     0 2012-10-01        0
-## 2     0 2012-10-01        5
-## 3     0 2012-10-01       10
-## 4     0 2012-10-01       15
-## 5     0 2012-10-01       20
-## 6     0 2012-10-01       25
+##    steps       date interval
+## 1      0 2012-10-01        0
+## 2      0 2012-10-01        5
+## 3      0 2012-10-01       10
+## 4      0 2012-10-01       15
+## 5      0 2012-10-01       20
+## 6      0 2012-10-01       25
+## 7      0 2012-10-01       30
+## 8      0 2012-10-01       35
+## 9      0 2012-10-01       40
+## 10     0 2012-10-01       45
+## 11     0 2012-10-01       50
+## 12     0 2012-10-01       55
+## 13     0 2012-10-01      100
+## 14     0 2012-10-01      105
+## 15     0 2012-10-01      110
+## 16     0 2012-10-01      115
+## 17     0 2012-10-01      120
+## 18     0 2012-10-01      125
+## 19     0 2012-10-01      130
+## 20     0 2012-10-01      135
 ```
 The "NA" were replaced with zeros.
 #################################################
@@ -787,9 +777,12 @@ aggregate(steps ~ date,new_activity,median)
 ## 61 2012-11-30     0
 ```
 
-Do these values differ from the estimates from the first part of the assignment?  It differs only because the missing data is filled in.  So, more zeros are added.  Now more days are included in the total calculations.   The first part of the assignment indicated a normal distribution of data because the mean and the median are the same.  
+**Do these values differ from the estimates from the first part of the assignment?**  
 
-What is the impact of imputing missing data on the estimates of the total daily number of steps?
+It differs only because the missing data is filled in.  So, more zeros are added.  Now more days are included in the total calculations.   The first part of the assignment indicated a normal distribution of data because the mean and the median are the same.  
+
+**What is the impact of imputing missing data on the estimates of the total daily number of steps?**
+
 The value for each day does not change.  However new values are added for the missing days.  So the missing days are now included in the calculations. This causes the histogram to be more skewed.  The x-axis on the histogram is not symmetric, which results in a not so normal distribution.
 
 #############################################
@@ -827,17 +820,31 @@ factor_set[,4] <- factor(factor_set[,4], labels = c("weekend", "weekday","weekda
 
 ```r
 new_activity <- factor_set
-head(new_activity,6)
+head(new_activity,20)
 ```
 
 ```
-##   steps       date interval     day
-## 1     0 2012-10-01        0 weekday
-## 2     0 2012-10-01        5 weekday
-## 3     0 2012-10-01       10 weekday
-## 4     0 2012-10-01       15 weekday
-## 5     0 2012-10-01       20 weekday
-## 6     0 2012-10-01       25 weekday
+##    steps       date interval     day
+## 1      0 2012-10-01        0 weekday
+## 2      0 2012-10-01        5 weekday
+## 3      0 2012-10-01       10 weekday
+## 4      0 2012-10-01       15 weekday
+## 5      0 2012-10-01       20 weekday
+## 6      0 2012-10-01       25 weekday
+## 7      0 2012-10-01       30 weekday
+## 8      0 2012-10-01       35 weekday
+## 9      0 2012-10-01       40 weekday
+## 10     0 2012-10-01       45 weekday
+## 11     0 2012-10-01       50 weekday
+## 12     0 2012-10-01       55 weekday
+## 13     0 2012-10-01      100 weekday
+## 14     0 2012-10-01      105 weekday
+## 15     0 2012-10-01      110 weekday
+## 16     0 2012-10-01      115 weekday
+## 17     0 2012-10-01      120 weekday
+## 18     0 2012-10-01      125 weekday
+## 19     0 2012-10-01      130 weekday
+## 20     0 2012-10-01      135 weekday
 ```
 
 Make a pannel plot containing a time series plot of the intervals and average numberof steps

@@ -48,8 +48,7 @@ The tapply function can be used to give you the same results as well.
 However it will show "NA" on days that have no steps to calculate.
 
 ```{r}
-attach(activity)
-tapply(steps,date,sum)
+tapply(activity$steps,activity$date,sum)
 ```
 
 The aggergate is another option
@@ -63,14 +62,14 @@ aggregate(steps ~ date,activity,sum)
 
 ```{r}
 with(all_steps, hist(all_steps$total_steps,main = "Total Steps Taken Per Day",
-                     xlab ="Steps", col = "blue" ))
+                     xlab ="Steps",col = "blue" ))
 
 ```
 
 Histogram can also be created using the tapply function
 
 ```{r}
-with(activity, hist(tapply(steps,date,sum),main = "Total Step Per Day",xlab = "Steps", col = "green"))
+with(activity, hist(tapply(steps,date,sum),main = "Total Step Per Day",xlab = "Steps",col = "green"))
 
 ```
 
@@ -151,8 +150,9 @@ Ordered the set by steps, and then 'tailed' the last 6 records,get the last valu
 ```{r}
 max_set <- subset(maxsteps, maxsteps[,3] == 1155)
 max_set <- max_set[order(max_set$steps),]
-tail(max_set,6)
+tail(max_set,3)
 ```
+ 
  steps       date   interval
 713     2012-10-22     1155
 
@@ -196,7 +196,7 @@ with 0.
 activity <- read.csv("activity.csv", header = TRUE,sep = ",")
 
 new_activity <- evalq(activity, activity$steps[which(is.na(activity$steps))] <- 0)
-head(new_activity,6)
+head(new_activity,20)
 ```
 The "NA" were replaced with zeros.
 #################################################
@@ -250,9 +250,12 @@ You can also use the aggregate functon
 aggregate(steps ~ date,new_activity,median)
 ```
 
-Do these values differ from the estimates from the first part of the assignment?  It differs only because the missing data is filled in.  So, more zeros are added.  Now more days are included in the total calculations.   The first part of the assignment indicated a normal distribution of data because the mean and the median are the same.  
+**Do these values differ from the estimates from the first part of the assignment?**  
 
-What is the impact of imputing missing data on the estimates of the total daily number of steps?
+It differs only because the missing data is filled in.  So, more zeros are added.  Now more days are included in the total calculations.   The first part of the assignment indicated a normal distribution of data because the mean and the median are the same.  
+
+**What is the impact of imputing missing data on the estimates of the total daily number of steps?**
+
 The value for each day does not change.  However new values are added for the missing days.  So the missing days are now included in the calculations. This causes the histogram to be more skewed.  The x-axis on the histogram is not symmetric, which results in a not so normal distribution.
 
 #############################################
@@ -282,7 +285,7 @@ factor_set[,4] <- factor(factor_set[,4], labels = c("weekend", "weekday","weekda
                                                     "weekday","weekday","weekday","weekend"))
 
 new_activity <- factor_set
-head(new_activity,6)
+head(new_activity,20)
 ```
 
 Make a pannel plot containing a time series plot of the intervals and average numberof steps
