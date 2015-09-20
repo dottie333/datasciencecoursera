@@ -39,23 +39,6 @@ Install the dplyr package to utilize the summarize feature
 library(dplyr)
 ```
 
-```
-## Warning: package 'dplyr' was built under R version 3.1.3
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-## 
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-## 
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
 Using dplyr, create a data frame  named "all_steps" that  will group by ‘date’ 
 and summarize on ‘steps’ per day.
 
@@ -94,7 +77,19 @@ attach(activity)
 ```
 
 ```
-## The following objects are masked from activity (pos = 5):
+## The following objects are masked from activity (pos = 3):
+## 
+##     date, interval, steps
+## 
+## The following objects are masked from activity (pos = 4):
+## 
+##     date, interval, steps
+## 
+## The following objects are masked from activity (pos = 7):
+## 
+##     date, interval, steps
+## 
+## The following objects are masked from activity (pos = 10):
 ## 
 ##     date, interval, steps
 ```
@@ -193,7 +188,7 @@ aggregate(steps ~ date,activity,sum)
 
 ########################################
 
-Histogram of the total number of steps taken each day
+**Histogram of the total number of steps taken each day**
 
 
 ```r
@@ -212,7 +207,7 @@ with(activity, hist(tapply(steps,date,sum),main = "Total Step Per Day",xlab = "S
 
 ![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
 
-calculate the mean and median of the total number of steps per day
+**calculate the mean and median of the total number of steps per day**
 
 
 ```r
@@ -395,7 +390,7 @@ aggregate(steps ~ date,activity,median)
 ```
 
 
-Plot average daily activity pattern
+**Plot average daily activity pattern**
 #####################################
 I plotted the average intervals and the average steps.  I know it is not correct but 
 if time allows, I will come back and correct it. 
@@ -479,7 +474,7 @@ tail(max_set,6)
 713     2012-10-22     1155
 
 ################################################
-Imputing missing values
+**Imputing missing values**
 
 To remove bias from the previous steps, I removed the “NA” value.  
 So for this step, I will re-read the activity set and give it another name activity2. 
@@ -492,7 +487,8 @@ activity2 <- read.csv("activity.csv", header = TRUE,sep = ",")
 activity2 <- activity2[order(activity2$date,activity2$interval),]
 ```
 
-Calculate and report total number of rows with NA
+**Calculate and report total number of rows with NA**
+
 
 ```r
 all_missing <- activity2[!complete.cases(activity2),]
@@ -503,7 +499,8 @@ nrow(all_missing)
 ## [1] 2304
 ```
 ################################################
-Devise a strategy for filling in all the missing values in the dataset.
+
+**Devise a strategy for filling in all the missing values in the dataset.**
 
 
 ```r
@@ -524,8 +521,7 @@ The missing values were replaced with the mean interval value.
 
 ###############################################
 
-Create a new dataset that is equal to the original dataset 
-but with the missing data filled in.
+**Create a new dataset that is equal to the original dataset but with the missing data filled in.**
 
 I re-loaded the data file to get the original, then substituted the "NA" 
 with 0.
@@ -550,7 +546,7 @@ head(new_activity,6)
 The "NA" were replaced with zeros.
 #################################################
 
-Histogram of total number of steps taken each day
+**Histogram of total number of steps taken each day**
 
 
 ```r
@@ -594,7 +590,7 @@ with(new_activity, hist(tapply(steps,date,sum),main = "Total Step Per Day",xlab 
 
 ![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png) 
 
-Calculate and report the mean and median total number of steps per day
+**Calculate and report the mean and median total number of steps per day**
 
 
 ```r
@@ -797,9 +793,9 @@ What is the impact of imputing missing data on the estimates of the total daily 
 The value for each day does not change.  However new values are added for the missing days.  So the missing days are now included in the calculations. This causes the histogram to be more skewed.  The x-axis on the histogram is not symmetric, which results in a not so normal distribution.
 
 #############################################
-Patterns between weekdays and weekends
+**Patterns between weekdays and weekends**
 
-Create a new factor vaiable in the dataset with two levels, "weekday" and "weekend"
+**Create a new factor vaiable in the dataset with two levels, "weekday" and "weekend"**
 
 -    Installed the “lubridate” package  so I could use the wday option. 
 -	 Created a variable, ‘mydate’, that contained the date column from the new_activity dataset.
@@ -813,13 +809,7 @@ Create a new factor vaiable in the dataset with two levels, "weekday" and "weeke
 
 ```r
 library(lubridate)
-```
 
-```
-## Warning: package 'lubridate' was built under R version 3.1.3
-```
-
-```r
 mydate <- as.Date(new_activity[,2])
 
 factor_set <- cbind(new_activity,wday(mydate))
@@ -853,12 +843,7 @@ head(new_activity,6)
 Make a pannel plot containing a time series plot of the intervals and average numberof steps
 taken,average across all weekdays or weekends.
 
+
+```r
 library(lattice)
-
-x <- tapply(new_activity$interval,new_activity$date,mean)
-y <- plot_interval$average_steps[new_activity$day 
-f <- new_activity[,4]
-
-xyplot(y ~ x | f, type ="l", layout = c(1,2), ylab = "Steps", xlab ="interval")
-
-
+```
