@@ -92,13 +92,8 @@ For the median:
 ```{r}
 daily_steps_median <- activity %>%
     group_by(date) %>%
-    summarise(average_steps = median(steps))
+    summarise(average_steps = median(order(activity[,1])))
 daily_steps_median
-```
-The aggregate fuction can be used as well
-
-```{r}
-aggregate(steps ~ date,activity,median)
 ```
 
 
@@ -128,6 +123,7 @@ The average seems to be the same if I averaged by group or over-all 5-minute int
 This is by group
 ```{r}
 plot_interval<- aggregate(interval ~ date,activity,mean)
+plot_interval
 ```
 
 This is for over-all average
@@ -237,22 +233,21 @@ You can also use the aggregate functon
 ```{r}
 aggregate(steps ~ date,new_activity,mean)
 ```
+
 for median
+
 ```{r}
 median_steps <- new_activity %>%
     group_by(date) %>%
-    summarise(average_steps = median(steps))
+    summarise(average_steps = median(order(new_activity$steps)))
 median_steps
 ```
 
-You can also use the aggregate functon
-```{r}
-aggregate(steps ~ date,new_activity,median)
-```
+
 
 **Do these values differ from the estimates from the first part of the assignment?**  
 
-It differs only because the missing data is filled in.  So, more zeros are added.  Now more days are included in the total calculations.   The first part of the assignment indicated a normal distribution of data because the mean and the median are the same.  
+It differs only because the missing data is filled in.  So, more zeros are added.  Now more days are included in the total calculations.   The first part of the assignment indicated a more normal distribution of data.  
 
 **What is the impact of imputing missing data on the estimates of the total daily number of steps?**
 
