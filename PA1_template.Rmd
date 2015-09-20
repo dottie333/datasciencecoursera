@@ -65,8 +65,6 @@ Histogram of the total number of steps taken each day
 with(all_steps, hist(all_steps$total_steps,main = "Total Steps Taken Per Day",
                      xlab ="Steps", col = "blue" ))
 
-dev.copy(png,file ="steps1.png")
-dev.off()
 ```
 
 Histogram can also be created using the tapply function
@@ -74,8 +72,6 @@ Histogram can also be created using the tapply function
 ```{r}
 with(activity, hist(tapply(steps,date,sum),main = "Total Step Per Day",xlab = "Steps", col = "green"))
 
-dev.copy(png,file ="steps2.png")
-dev.off()
 ```
 
 calculate the mean and median of the total number of steps per day
@@ -118,8 +114,6 @@ plot_interval<- aggregate(interval ~ date,activity,mean)
 plot(plot_interval[,2],daily_steps_mean$average_steps,
      main ="Average Steps Per Day",xlab = "5 minute intervals ", ylab = "Steps", type='l' )
 
-dev.copy(png,file ="interval1.png")
-dev.off()
 ```
 
 #####################################
@@ -196,6 +190,7 @@ but with the missing data filled in.
 
 I re-loaded the data file to get the original, then substituted the "NA" 
 with 0.
+
 ```{r}
 activity <- read.csv("activity.csv", header = TRUE,sep = ",")
 
@@ -217,13 +212,13 @@ daily_steps
 with(daily_steps, hist(daily_steps$total_steps,main = "Total Steps Taken Per Day",
                      xlab ="Steps", col = "blue" ))
 
-dev.copy(png,file ="tsteps1.png")
-dev.off()
+```
+
+Again, using tapply
+
+```{r}
 
 with(new_activity, hist(tapply(steps,date,sum),main = "Total Step Per Day",xlab = "Steps", col = "green"))
-
-dev.copy(png,file ="tsteps2.png")
-dev.off()
 
 ```
 

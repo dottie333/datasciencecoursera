@@ -39,6 +39,23 @@ Install the dplyr package to utilize the summarize feature
 library(dplyr)
 ```
 
+```
+## Warning: package 'dplyr' was built under R version 3.1.3
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+## 
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
 Using dplyr, create a data frame  named "all_steps" that  will group by ‘date’ 
 and summarize on ‘steps’ per day.
 
@@ -77,7 +94,7 @@ attach(activity)
 ```
 
 ```
-## The following objects are masked from activity (pos = 3):
+## The following objects are masked from activity (pos = 5):
 ## 
 ##     date, interval, steps
 ```
@@ -186,24 +203,6 @@ with(all_steps, hist(all_steps$total_steps,main = "Total Steps Taken Per Day",
 
 ![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
 
-```r
-dev.copy(png,file ="steps1.png")
-```
-
-```
-## png 
-##   5
-```
-
-```r
-dev.off()
-```
-
-```
-## RStudioGD 
-##         2
-```
-
 Histogram can also be created using the tapply function
 
 
@@ -212,24 +211,6 @@ with(activity, hist(tapply(steps,date,sum),main = "Total Step Per Day",xlab = "S
 ```
 
 ![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
-
-```r
-dev.copy(png,file ="steps2.png")
-```
-
-```
-## png 
-##   5
-```
-
-```r
-dev.off()
-```
-
-```
-## RStudioGD 
-##         2
-```
 
 calculate the mean and median of the total number of steps per day
 
@@ -429,24 +410,6 @@ plot(plot_interval[,2],daily_steps_mean$average_steps,
 
 ![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png) 
 
-```r
-dev.copy(png,file ="interval1.png")
-```
-
-```
-## png 
-##   5
-```
-
-```r
-dev.off()
-```
-
-```
-## RStudioGD 
-##         2
-```
-
 #####################################
 Which 5 minute  interval, on average across all days in the dataset, 
 contains the maximum nmber of steps?
@@ -567,6 +530,7 @@ but with the missing data filled in.
 I re-loaded the data file to get the original, then substituted the "NA" 
 with 0.
 
+
 ```r
 activity <- read.csv("activity.csv", header = TRUE,sep = ",")
 
@@ -621,47 +585,14 @@ with(daily_steps, hist(daily_steps$total_steps,main = "Total Steps Taken Per Day
 
 ![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-1.png) 
 
-```r
-dev.copy(png,file ="tsteps1.png")
-```
+Again, using tapply
 
-```
-## png 
-##   5
-```
-
-```r
-dev.off()
-```
-
-```
-## RStudioGD 
-##         2
-```
 
 ```r
 with(new_activity, hist(tapply(steps,date,sum),main = "Total Step Per Day",xlab = "Steps", col = "green"))
 ```
 
-![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-2.png) ![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-3.png) 
-
-```r
-dev.copy(png,file ="tsteps2.png")
-```
-
-```
-## png 
-##   5
-```
-
-```r
-dev.off()
-```
-
-```
-## RStudioGD 
-##         2
-```
+![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png) 
 
 Calculate and report the mean and median total number of steps per day
 
@@ -882,7 +813,13 @@ Create a new factor vaiable in the dataset with two levels, "weekday" and "weeke
 
 ```r
 library(lubridate)
+```
 
+```
+## Warning: package 'lubridate' was built under R version 3.1.3
+```
+
+```r
 mydate <- as.Date(new_activity[,2])
 
 factor_set <- cbind(new_activity,wday(mydate))
